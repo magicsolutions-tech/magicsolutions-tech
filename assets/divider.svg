@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="16" viewBox="0 0 1000 16" role="img" aria-label="divider" font-family="'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif">
+<title>divider</title>
+<style>.dot{animation:run 5s ease-in-out infinite alternate}@keyframes run{from{transform:translateX(0)}to{transform:translateX(940px)}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important}}</style>
+<defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#9A88FF"/><stop offset="0.55" stop-color="#2FD0E4"/><stop offset="1" stop-color="#FFB347"/>
+  </linearGradient><radialGradient id="d" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+<rect x="0" y="7" width="1000" height="2" rx="1" fill="url(#g)" opacity="0.55"/>
+<g class="dot"><circle cx="30" cy="8" r="8" fill="url(#d)"/></g>
+</svg>
