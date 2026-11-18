@@ -2,6 +2,7 @@
 //   assets/stats.svg      repository, star, fork and follower counts (animated)
 //   assets/languages.svg  language mix across public repositories (animated bar)
 //   assets/activity.svg   the latest public activity (animated feed)
+//   assets/snake.svg      52-week commit grid with an animated snake (scripts/snake.mjs)
 //   README.md             the "Latest repositories" list between the REPOS markers
 // Runs inside GitHub Actions with the built-in token (see .github/workflows/update-profile.yml). Only public data is read.
 // Local preview with fake numbers:  MOCK=1 OUT_DIR=./preview node scripts/generate.mjs
@@ -9,6 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { C, esc, gradientDefs, relTime, svgWrap } from "./theme.mjs";
+import { commitWeeks, emptyWeeks, mockWeeks, snakeSvg } from "./snake.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(here, "..");
@@ -40,6 +42,7 @@ async function load() {
         { name: "three-hero", full_name: `${OWNER}/three-hero`, html_url: "#", description: "WebGL neuron hero for fast 3D websites", language: "JavaScript", stargazers_count: 6, forks_count: 0, pushed_at: ago(120), fork: false },
       ],
       langs: { TypeScript: 612000, Python: 240000, JavaScript: 150000, CSS: 52000, HTML: 31000, Shell: 9000 },
+      weeks: mockWeeks(),
       events: [
         { type: "PushEvent", repo: { name: `${OWNER}/magic-cloud-pos` }, payload: { size: 4 }, created_at: ago(1) },
         { type: "PullRequestEvent", repo: { name: `${OWNER}/agent-toolkit` }, payload: { action: "closed", number: 42, pull_request: { merged: true } }, created_at: ago(6) },
@@ -50,7 +53,7 @@ async function load() {
       ],
     };
   }
-  if (process.env.EMPTY === "1") return { owner: { followers: 0 }, repos: [], langs: {}, events: [] }; // starting images, before the first live refresh
+  if (process.env.EMPTY === "1") return { owner: { followers: 0 }, repos: [], langs: {}, events: [], weeks: emptyWeeks() }; // starting images, before the first live refresh
   const info = await gh(`/users/${OWNER}`);
   const isOrg = info.type === "Organization";
   const repoUrl = isOrg ? `/orgs/${OWNER}/repos?type=public&per_page=100&sort=pushed` : `/users/${OWNER}/repos?type=owner&per_page=100&sort=pushed`;
@@ -64,11 +67,15 @@ async function load() {
       for (const [k, v] of Object.entries(l)) langs[k] = (langs[k] || 0) + v;
     } catch { /* skip this repo */ }
   }
+  let weeks = emptyWeeks();
+  try {
+    weeks = await commitWeeks(repos, { Accept: "application/vnd.github+json", "User-Agent": "profile-readme-refresh", ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}) });
+  } catch { /* keep the empty grid */ }
   let events = [];
   try {
     events = await gh(isOrg ? `/orgs/${OWNER}/events?per_page=40` : `/users/${OWNER}/events/public?per_page=40`);
   } catch { /* no events */ }
-  return { owner: info, repos, langs, events };
+  return { owner: info, repos, langs, events, weeks };
 }
 
 // ---------------------------------------------------------------- stats.svg
@@ -218,6 +225,7 @@ const data = await load();
 fs.writeFileSync(path.join(OUT, "stats.svg"), statsSvg(data));
 fs.writeFileSync(path.join(OUT, "languages.svg"), languagesSvg(data));
 fs.writeFileSync(path.join(OUT, "activity.svg"), activitySvg(data));
+fs.writeFileSync(path.join(OUT, "snake.svg"), snakeSvg(data.weeks));
 
 const readme = path.join(ROOT, "README.md");
 if (!MOCK && fs.existsSync(readme)) {

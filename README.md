@@ -33,6 +33,10 @@ applications designed around the people who use them.
 
 <p align="center"><img src="assets/activity.svg" alt="Our latest public activity" width="100%"></p>
 
+## 🐍 Commit snake
+
+<p align="center"><img src="assets/snake.svg" alt="Commit activity over the last 12 months, with an animated snake eating the squares" width="100%"></p>
+
 ## 📦 Latest repositories
 
 <!--REPOS:start-->
