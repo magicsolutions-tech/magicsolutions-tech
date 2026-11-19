@@ -13,6 +13,11 @@
   </linearGradient></defs>
 <g class="c"><rect x="0.5" y="0.5" width="999" height="137" rx="20" fill="#0C0E16" stroke="rgba(255,255,255,0.10)"/>
 <circle class="live" style="transform-origin:34px 38px" cx="34" cy="38" r="5" fill="#3DDC97"/>
-<text x="52" y="43" font-size="13" font-weight="600" fill="#AEB4C8" letter-spacing="1.5">RECENT ACTIVITY</text></g><text x="28" y="98" font-size="17" font-weight="600" fill="#FFFFFF">No public activity yet.</text>
-<text x="28" y="122" font-size="14" fill="#AEB4C8">New commits, pull requests and releases will appear here automatically.</text>
+<text x="52" y="43" font-size="13" font-weight="600" fill="#AEB4C8" letter-spacing="1.5">RECENT ACTIVITY</text></g><g transform="translate(0 76)"><g class="r" style="animation-delay:0.20s">
+  <line x1="28" y1="54" x2="972" y2="54" stroke="rgba(255,255,255,0.06)"/>
+  <circle cx="44" cy="25" r="15" fill="#2FD0E4" fill-opacity="0.16" stroke="#2FD0E4" stroke-opacity="0.6"/>
+  <text x="44" y="31" text-anchor="middle" font-size="15" font-weight="700" fill="#2FD0E4">+</text>
+  <text x="74" y="30" font-size="16" fill="#E8EBF5">Created branch main in <tspan font-weight="700" fill="#2FD0E4">magicsolutions-tech</tspan></text>
+  <text x="972" y="30" text-anchor="end" font-size="13.5" fill="#AEB4C8">1 day ago</text>
+</g></g>
 </svg>
